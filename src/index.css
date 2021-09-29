@@ -1,3 +1,47 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@import url("https://fonts.googleapis.com/css2?family=Irish+Grover&family=Syne+Mono&display=swap");
+
+#root,
+body,
+html {
+  height: 100%;
+  background-color: black;
+}
+
+.App {
+  text-align: center;
+  height: 100vh;
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+button,
+h2 {
+  font-family: "Syne Mono", monospace !important;
+  font-size: calc(0.1rem + 12w) !important;
+}
+
+h1 {
+  color: white;
+  font-size: calc(3rem + 5vw) !important;
+  font-family: "Irish Grover";
+  margin: auto !important;
+}
+
+h2 {
+  color: white;
+  margin: auto;
+  text-align: center;
+}

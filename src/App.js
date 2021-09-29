@@ -1,14 +1,12 @@
-import "./App.css";
+import "./index.css";
 import React from "react";
-import ReactPlayer from "react-player";
 import Promt from "./Promt";
+import YouTube from "react-youtube";
 
 // Bootstrap Imports
 import Button from "react-bootstrap/Button";
-import { Container, Row, Col } from "react-bootstrap";
-import ReactBootstrapSlider from "react-bootstrap-slider";
+import { Col } from "react-bootstrap";
 
-const beats = require("./beats");
 
 let randomWords = "";
 let timeOut = "";
@@ -24,12 +22,17 @@ class App extends React.Component {
       wordLength: 6,
       timerMills: 15000,
       stop: false,
-      url: "",
-      urls: beats.beatsArray,
     };
 
     randomWords = require("random-words");
   }
+
+  onPlayerReady = (event) => {
+    const player = event.target;
+    player.loadPlaylist({
+      list: "PL0L_zzLQSZ2VqhAvl42s_LMqAlUc7dmXs",
+    });
+  };
 
   // Handle user input
   handleChange = (e) => {
@@ -80,21 +83,16 @@ class App extends React.Component {
   };
 
   // Add song to embedded YouTube playlist
-  addToPlaylist = (e) => {
-    e.preventDefault();
-    const newUrl = e.target.url.value;
-    const newArray = Array(newUrl);
-    this.setState({
-      url: "",
-      urls: this.state.urls.concat(newArray),
-      playlistEmpty: false,
-    });
-  };
-
-  // Clear embedded YouTube playlist
-  clearPlaylist = () => {
-    this.setState({ urls: [], playlistEmpty: true });
-  };
+//   addToPlaylist = (e) => {
+//     e.preventDefault();
+//     const newUrl = e.target.url.value;
+//     const newArray = Array(newUrl);
+//     this.setState({
+//       url: "",
+//       urls: this.state.urls.concat(newArray),
+//       playlistEmpty: false,
+//     });
+//   };
 
   // Clear current word
   clearWord = () => {
@@ -109,28 +107,28 @@ class App extends React.Component {
 
   render() {
     return (
-      <Container fluid className="App d-flex flex-column">
+      <div className="App d-flex flex-column">
         <Promt />
 
         <h1> {this.state.word.toUpperCase()} </h1>
 
-        <Row className="">
+        <div className="flex flex-row">
           <Col className="d-flex flex-column justify-content-around bg-secondary">
             <div>
-              <Row>
+              <div className="flex flex-row">
                 <h2>TIMER</h2>
-              </Row>
+              </div>
 
-              <Row>
+              <div className="flex flex-row">
                 <Col>
-                  <ReactBootstrapSlider
+                  <input
+                    type="range"
                     name="timer"
                     min={1}
                     max={120}
                     step={1}
-                    slideStop={this.handleTimerChange}
                     value={this.state.timer}
-                    type="number"
+                    onChange={this.handleTimerChange}
                   />
                 </Col>
 
@@ -145,10 +143,10 @@ class App extends React.Component {
                     type="number"
                   />
                 </Col>
-              </Row>
+              </div>
             </div>
 
-            <Row>
+            <div className="flex flex-row">
               <Col>
                 <h2>Add YouTube URL to playlist</h2>
 
@@ -193,12 +191,11 @@ class App extends React.Component {
                 >
                   Stop
                 </Button>
-                <Row className="d-flex justify-content-around">
+                <div className="flex flex-row justify-around">
                   <Col>
                     <h2>Word Amount</h2>
 
                     <input
-                      className="w-25"
                       min={1}
                       max={5}
                       name="wordAmount"
@@ -212,7 +209,7 @@ class App extends React.Component {
                     <h2>Max Length</h2>
 
                     <input
-                      className="w-25"
+                      className=""
                       min={2}
                       max={20}
                       name="wordLength"
@@ -221,46 +218,38 @@ class App extends React.Component {
                       type="number"
                     />
                   </Col>
-                </Row>
+                </div>
               </Col>
+            </div>
 
-              <Container>
-                <Button
-                  onClick={this.clearPlaylist}
-                  variant="danger"
-                  type="button"
-                  className="m-3"
-                >
-                  Clear Playlist
-                </Button>
-
-                <Button
-                  onClick={this.clearWord}
-                  variant="warning"
-                  type="button"
-                  className="m-3"
-                >
-                  Clear Word
-                </Button>
-              </Container>
-            </Row>
+            <div className="w-full">
+              <Button
+                onClick={this.clearWord}
+                variant="warning"
+                type="button"
+                className="m-3"
+              >
+                Clear Word
+              </Button>
+            </div>
           </Col>
 
           <Col className="bg-dark no-gutters">
             {this.state.playlistEmpty ? (
               <h1>Add a YouTube link</h1>
             ) : (
-              <ReactPlayer
+              <YouTube
                 key={this.state.urls}
-                url={this.state.urls}
+                videoID={"PL0L_zzLQSZ2VqhAvl42s_LMqAlUc7dmXs"}
                 controls={true}
                 className="mx-auto"
+                onReady={this.onPlayerReady}
                 style={{ maxWidth: "90vw" }}
               />
             )}
           </Col>
-        </Row>
-      </Container>
+        </div>
+      </div>
     );
   }
 }
